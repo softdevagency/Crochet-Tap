@@ -603,3 +603,100 @@ $('.modal').on('shown.bs.modal', function(e) {
     $('.preview-slider-nav').slick('setPosition');
     $('.wrap-modal-slider').addClass('open');
 })
+
+// Crochet Tap icon fallback
+// The template's original Font Awesome webfont files are invalid placeholders.
+// Replace the icons used by the site with inline SVG so they work without fonts.
+(function() {
+    'use strict';
+
+    var icons = {
+        'fa-bars': '<path d="M4 7h16M4 12h16M4 17h16"/>',
+        'fa-xmark': '<path d="M6 6l12 12M18 6L6 18"/>',
+        'fa-phone': '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.9.33 1.78.62 2.63a2 2 0 0 1-.45 2.11L8 9.73a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.85.29 1.73.5 2.63.62A2 2 0 0 1 22 16.92z"/>',
+        'fa-phone-alt': '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.9.33 1.78.62 2.63a2 2 0 0 1-.45 2.11L8 9.73a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.85.29 1.73.5 2.63.62A2 2 0 0 1 22 16.92z"/>',
+        'fa-envelope': '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
+        'fa-location-dot': '<path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0z"/><circle cx="12" cy="10" r="2.5"/>',
+        'fa-clock': '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+        'fa-eye': '<path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z"/><circle cx="12" cy="12" r="2.5"/>',
+        'fa-heart': '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/>',
+        'fa-dash': '<path d="M5 12h14"/>',
+        'fa-horizontal-rule': '<path d="M5 12h14"/>',
+        'fa-plus': '<path d="M12 5v14M5 12h14"/>',
+        'fa-plus-large': '<path d="M12 5v14M5 12h14"/>',
+        'fa-star': '<path d="M12 2.5l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5-5.8-3.1-5.8 3.1 1.1-6.5-4.7-4.6 6.5-.9L12 2.5z"/>',
+        'fa-facebook-f': '<path d="M14 8h3V4h-3c-3 0-5 2-5 5v2H6v4h3v7h4v-7h3l1-4h-4V9c0-.7.3-1 1-1z"/>',
+        'fa-instagram': '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" class="ct-icon-dot"/>',
+        'fa-whatsapp': '<path d="M20.5 11.6a8.5 8.5 0 0 1-12.6 7.5L3 20.5l1.4-4.7A8.5 8.5 0 1 1 20.5 11.6z"/><path d="M8.3 7.6c.3-.4.6-.4.9-.1l1.1 1.7c.2.3.1.6-.1.8l-.7.7c.8 1.6 2 2.8 3.6 3.6l.7-.8c.2-.2.5-.3.8-.1l1.8 1c.3.2.4.6.2.9-.5.9-1.4 1.5-2.4 1.4-3.9-.5-7.8-4.3-8.3-8.2-.1-1 .5-1.8 1.4-2.4z"/>'
+    };
+
+    function iconName(element) {
+        var classes = Array.prototype.slice.call(element.classList);
+        for (var i = 0; i < classes.length; i++) {
+            if (icons[classes[i]]) return classes[i];
+        }
+        return null;
+    }
+
+    function replaceIcons(root) {
+        var elements = (root || document).querySelectorAll('i[class*="fa-"]');
+        elements.forEach(function(element) {
+            var name = iconName(element);
+            if (!name) return;
+
+            var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('viewBox', '0 0 24 24');
+            svg.setAttribute('width', '1em');
+            svg.setAttribute('height', '1em');
+            svg.setAttribute('aria-hidden', 'true');
+            svg.setAttribute('focusable', 'false');
+            svg.setAttribute('class', 'ct-inline-icon ct-' + name);
+            svg.setAttribute('fill', name === 'fa-star' || name === 'fa-facebook-f' ? 'currentColor' : 'none');
+            svg.setAttribute('stroke', 'currentColor');
+            svg.setAttribute('stroke-width', '2');
+            svg.setAttribute('stroke-linecap', 'round');
+            svg.setAttribute('stroke-linejoin', 'round');
+            svg.style.verticalAlign = '-0.125em';
+            svg.style.display = 'inline-block';
+            svg.innerHTML = icons[name];
+            element.replaceWith(svg);
+        });
+    }
+
+    function initIconFallback() {
+        replaceIcons(document);
+
+        document.addEventListener('click', function(event) {
+            var wishlistButton = event.target.closest && event.target.closest('.wishlist-icon');
+            if (!wishlistButton) return;
+
+            var heart = wishlistButton.querySelector('.ct-fa-heart');
+            if (!heart) return;
+
+            var isActive = heart.getAttribute('fill') === 'currentColor';
+            heart.setAttribute('fill', isActive ? 'none' : 'currentColor');
+        });
+
+        if ('MutationObserver' in window) {
+            new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    mutation.addedNodes.forEach(function(node) {
+                        if (node.nodeType === 1) {
+                            if (node.matches && node.matches('i[class*="fa-"]')) {
+                                replaceIcons(node.parentNode);
+                            } else {
+                                replaceIcons(node);
+                            }
+                        }
+                    });
+                });
+            }).observe(document.body, { childList: true, subtree: true });
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initIconFallback);
+    } else {
+        initIconFallback();
+    }
+})();
